@@ -1,0 +1,15 @@
+{
+  "app":{
+    "port":8000,
+    "url": "http://localhost",
+    "env":"development",
+    "secret":"SGVsbG8hIFRoaXMgaXMgQW51aiBLdW1hciBQYXRoYWsuIFRoaXMgYXBwbGljYXRpb24ncyBiYWNrZW5kIGlzIHdyaXR0ZW4gYnkgbWUuIFRvIGNvbnRhY3QgcGxlYXNlIG1haWwgb24gJ2FudWprdW1hcnBhdGhhazEwMDdAZ21haWwuY29tJw=="
+  },
+  "db":{
+    "host":"",
+    "port":"",
+    "username":"",
+    "password":"",
+    "service":"mongo"
+  }
+}
