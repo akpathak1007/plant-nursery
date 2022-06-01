@@ -1,9 +1,11 @@
-const { DEV, PROD } = require('../constants/app-constants');
-const AppError = require('../classes/app-error');
-const http = require('../constants/http-constants');
+const config = require("config");
+
+const { DEV, PROD } = require("../constants/app-constants");
+const AppError = require("../classes/app-error");
+const http = require("../constants/http-constants");
 
 /** Get http status by http code.  */
-exports.getHttpStatus = (httpCode) => {
+const getHttpStatus = (httpCode) => {
   let status = null;
   switch (httpCode) {
     case http._200:
@@ -32,7 +34,7 @@ exports.getHttpStatus = (httpCode) => {
 };
 /** Grasp function is used for catching error.
  * Wrapping an API handler in the grasp function and all the error will be caught by this method. */
-exports.grasp = (cb) => {
+const grasp = (cb) => {
   return (req, res, next) => {
     cb(req, res, next).catch((err) => {
       next(err);
@@ -40,12 +42,7 @@ exports.grasp = (cb) => {
   };
 };
 /** Generate consistent json response.  */
-exports.response = (
-  res,
-  message,
-  statusCode,
-  data = null
-) => {
+const response = (res, message, statusCode, data = null) => {
   const status = getHttpStatus(statusCode);
   const responseData = {
     status,
@@ -56,18 +53,19 @@ exports.response = (
   return res.status(statusCode).json(responseData);
 };
 /** A global error handler. It should use in server.js file after defining all the routers. */
-exports.errorResHandler = (err, req, res, next) => {
+const errorResHandler = (err, req, res, next) => {
   console.log(err);
-  const env = process.env.NODE_ENV;
+  console.log("hello");
+  const env = config.get("app.env");
   const { appError } = err;
   let message = err.message;
   let data = appError ? err.data : null;
-  let status = 500;
+  let status = http._500;
   if (env === DEV) {
     if (appError) {
       status = err.statusCode;
     } else if (Object.getPrototypeOf(err).isJoi) {
-      status = _400;
+      status = http._400;
     }
     return response(res, message, status, data);
   } else if (env === PROD) {
@@ -75,20 +73,26 @@ exports.errorResHandler = (err, req, res, next) => {
     return response(res, message, status, data);
   }
 };
-/** Send success json response  */
-exports.success = (
-  res,
-  message,
-  data = null,
-  statusCode = _200
-) => {
+/**
+ * Send success json response
+ *  @param res
+ *  @param message
+ *  @param data
+ *  @param statusCode
+ * */
+const success = (res, message, data = null, statusCode = http._200) => {
   return response(res, message, statusCode, data);
 };
 /** Throw and error with will be catched by the grasp method and handle by the errorResHandler(). errorResHandler() method is a global error handler.  */
-exports.error = (
-  message,
-  statusCode = _400,
-  data = null
-) => {
+const error = (message, statusCode = http._400, data = null) => {
   throw new AppError(message, statusCode, data);
+};
+
+module.exports = {
+  getHttpStatus,
+  grasp,
+  response,
+  error,
+  errorResHandler,
+  success,
 };

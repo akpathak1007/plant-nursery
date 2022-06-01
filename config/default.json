@@ -5,11 +5,13 @@
     "env":"development",
     "secret":"SGVsbG8hIFRoaXMgaXMgQW51aiBLdW1hciBQYXRoYWsuIFRoaXMgYXBwbGljYXRpb24ncyBiYWNrZW5kIGlzIHdyaXR0ZW4gYnkgbWUuIFRvIGNvbnRhY3QgcGxlYXNlIG1haWwgb24gJ2FudWprdW1hcnBhdGhhazEwMDdAZ21haWwuY29tJw=="
   },
-  "db":{
+  "mysql":{
     "host":"",
     "port":"",
     "username":"",
-    "password":"",
-    "service":"mongo"
+    "password":""
+  },
+  "mongodb":{
+    "url":"mongodb+srv://akpathak:akpathak@cluster0.ijhzwqm.mongodb.net/?retryWrites=true&w=majority"
   }
 }
